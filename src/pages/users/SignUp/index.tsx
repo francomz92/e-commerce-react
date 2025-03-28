@@ -3,25 +3,27 @@ import { SITE_NAME } from '../../../constants'
 import { userSignUpValidationSchema } from '../../../schemas/users/validations'
 import { useForm } from '../../../services/hooks/forms'
 
-const SignUp = () => {
-  const registerUser = async (data: Record<string, string>) => {
-    const response = await register(
-      data.username,
-      data.email,
-      data.password,
-      data.password2
-    )
-    if (response.error) {
-      console.error(response.error)
-    } else {
-      console.info(response.data ?? 'Registro exitoso.!!')
-    }
+const registerUser = async (data: Record<string, string>) => {
+  const response = await register(
+    data.username,
+    data.email,
+    data.password,
+    data.password2
+  )
+  if (response.error) {
+    console.error(response.error)
+    return false
   }
+  console.info(response.data ?? 'Registro exitoso.!!')
+  return true
+}
 
+const SignUp = () => {
   type SignUpSchema = typeof userSignUpValidationSchema.__default
   const { form } = useForm<SignUpSchema>({
     onSubmit: registerUser,
     validationSchema: userSignUpValidationSchema,
+    onReset: () => form.resetForm(),
   })
 
   return (
