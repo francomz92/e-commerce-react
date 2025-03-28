@@ -1,4 +1,4 @@
-import { AxiosRequestHeaders } from 'axios'
+import { RawAxiosRequestConfig } from 'axios'
 
 export enum HttpMethods {
   GET = 'GET',
@@ -11,6 +11,6 @@ export enum HttpMethods {
 export type RequestArgs = {
   url: string,
   method: HttpMethods,
-  data?: Record<string, unknown>,
-  headers?: AxiosRequestHeaders
+  data?: Record<string, unknown> | FormData,
+  headers?: RawAxiosRequestConfig['headers'],
 }

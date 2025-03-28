@@ -28,7 +28,7 @@ export class StorageService {
   }
 
   public static get instance() {
-    if (!StorageService.instance) {
+    if (!StorageService.#instance) {
       const manager = new LocalStorageManager();
       StorageService.#instance = new StorageService(manager);
     };

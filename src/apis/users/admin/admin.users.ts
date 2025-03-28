@@ -1,10 +1,10 @@
-import { API_ADMIN } from '../../constants';
+import { API_ADMIN } from '../../../constants';
 import {
   UserResponse,
   UsersQueryParams,
-} from '../../schemas/users';
-import { getResponseData } from '../../services/http';
-import { HttpMethods } from '../../types/apis';
+} from '../../../schemas/users';
+import { getResponseData } from '../../../services/http';
+import { HttpMethods } from '../../../types/apis';
 
 
 

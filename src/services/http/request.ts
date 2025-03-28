@@ -30,7 +30,10 @@ const requestActions: Record<string, CallableFunction> = {
     );
   },
   DELETE: async (config: RequestArgs) => {
-    return await request.delete(config.url);
+    return await request.delete(
+      config.url,
+      { params: config.data, headers: config.headers }
+    );
   }
 }
 

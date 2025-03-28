@@ -1,22 +1,27 @@
+import { BaseQueryParams } from '../baseQueryParams';
+
 interface Role {
   id: string;
   name: string;
 }
 
-export interface UserResponse {
+export interface TinyUser {
   id: string;
   username: string;
   email: string;
-  roles: Role[];
 }
 
-export interface UsersQueryParams extends Record<string, unknown> {
+export interface UsersQueryParams extends BaseQueryParams {
   username?: string;
   email?: string;
   role?: string[];
   is_active?: boolean;
   is_admin?: boolean;
-  order_by?: string;
-  skip?: number;
-  limit?: number;
+}
+
+//* Responses
+
+export interface UserResponse extends TinyUser {
+  is_active?: boolean;
+  roles: Role[];
 }

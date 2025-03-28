@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { API_BASE_URL } from '../constants';
+import { API_BASE_URL, DEV_MODE } from '../constants';
 import { StorageService } from '../services/storage/storageService';
 import { refreshToken } from './users/auth';
 
@@ -46,7 +46,7 @@ request.interceptors.response.use(
         storageService.set('access', response.data.access);
         storageService.set('refresh', response.data.refresh);
       } catch (error) {
-        if (error instanceof Error) {
+        if (DEV_MODE && error instanceof Error) {
           console.error(error.message);
         }
         storageService.clear();
@@ -56,7 +56,7 @@ request.interceptors.response.use(
         refreshingToken = false
       }
       return request(config);
+    }
+    return Promise.reject(error.response?.data);
   }
-  return Promise.reject(error.response?.data);
-}
 );
