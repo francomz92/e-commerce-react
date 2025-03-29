@@ -1,29 +1,38 @@
 import { register } from '../../../apis/users/auth'
 import { SITE_NAME } from '../../../constants'
 import { userSignUpValidationSchema } from '../../../schemas/users/validations'
-import { useForm } from '../../../services/hooks/forms'
+import { useForm } from '../../../services/hooks'
+import { Button, Field } from '../../../utils/components'
+import { buttonStyle } from '../../../assets/styles/buttons'
+import { inputStyle } from '../../../assets/styles/fields'
 
-const registerUser = async (data: Record<string, string>) => {
-  const response = await register(
-    data.username,
-    data.email,
-    data.password,
-    data.password2
-  )
-  if (response.error) {
-    console.error(response.error)
-    return false
+
+type SignUpSchema = typeof userSignUpValidationSchema.__default
+
+const SignUp: React.FC = () => {
+  async function registerUser(data: Record<string, string>) {
+    const response = await register(
+      data.username,
+      data.email,
+      data.password,
+      data.password2
+    )
+    if (response.error) {
+      if (response.error.detail) {
+        alert(response.error.detail)
+      } else {
+        const errors = response.error as SignUpSchema
+        alert(JSON.stringify(errors))
+      }
+    } else {
+      // alert('Registro exitoso, confirme su email para completar el registro')
+      alert(response.data.detail)
+    }
   }
-  console.info(response.data ?? 'Registro exitoso.!!')
-  return true
-}
 
-const SignUp = () => {
-  type SignUpSchema = typeof userSignUpValidationSchema.__default
   const { form } = useForm<SignUpSchema>({
     onSubmit: registerUser,
     validationSchema: userSignUpValidationSchema,
-    onReset: () => form.resetForm(),
   })
 
   return (
@@ -42,7 +51,7 @@ const SignUp = () => {
         <div className={`sm:mx-auto sm:w-full sm:max-w-sm`}>
           <img
             className={`mx-auto h-10 w-auto`}
-            src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+            src='/mark.svg'
             alt={SITE_NAME}
           />
           <h2
@@ -65,40 +74,21 @@ const SignUp = () => {
             onSubmit={form.handleSubmit}
           >
             <div>
-              <label
-                htmlFor="username"
-                className={`block text-sm/6 font-medium text-gray-900`}
-              >
-                Nombre de usuario
-              </label>
-              <div className={`mt-2`}>
-                <input
-                  type="text"
-                  name="username"
-                  id="username"
-                  autoComplete="username"
-                  className={`
-                    block
-                    w-full
-                    rounded-md
-                    bg-white
-                    px-3
-                    py-1.5
-                    text-base
-                    text-gray-900
-                    outline-1
-                    -outline-offset-1
-                    outline-gray-300
-                    placeholder:text-gray-400
-                    focus:outline-2
-                    focus:-outline-offset-2
-                    focus:outline-indigo-600
-                    sm:text-sm/6
-                  `}
-                  onChange={form.handleChange}
-                  value={form.values.username}
-                />
-              </div>
+              <Field
+                textLabel='Nombre de usuario'
+                labelProps={{
+                  className: `block text-sm/6 font-medium text-gray-900`
+                }}
+                inputProps={{
+                  className: inputStyle,
+                  type: 'text',
+                  name: 'username',
+                  id: 'username',
+                  autoComplete: 'username',
+                  onChange: form.handleChange,
+                  value: form.values.username,
+                }}
+              />
               {form.errors.username && (
                 <span className={`mt-2 text-sm/6 text-red-600`}>
                   {form.errors.username}
@@ -107,40 +97,21 @@ const SignUp = () => {
             </div>
 
             <div>
-              <label
-                htmlFor="email"
-                className={`block text-sm/6 font-medium text-gray-900`}
-              >
-                Correo electrónico
-              </label>
-              <div className={`mt-2`}>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  autoComplete="email"
-                  className={`
-                    block
-                    w-full
-                    rounded-md
-                    bg-white
-                    px-3
-                    py-1.5
-                    text-base
-                    text-gray-900
-                    outline-1
-                    -outline-offset-1
-                    outline-gray-300
-                    placeholder:text-gray-400
-                    focus:outline-2
-                    focus:-outline-offset-2
-                    focus:outline-indigo-600
-                    sm:text-sm/6
-                  `}
-                  onChange={form.handleChange}
-                  value={form.values.email}
-                />
-              </div>
+              <Field
+                textLabel='Correo electrónico'
+                labelProps={{
+                  className: `block text-sm/6 font-medium text-gray-900`
+                }}
+                inputProps={{
+                  className: inputStyle,
+                  type: 'email',
+                  name: 'email',
+                  id: 'email',
+                  autoComplete: 'email',
+                  onChange: form.handleChange,
+                  value: form.values.email,
+                }}
+              />
               {form.errors.email && (
                 <span className={`mt-2 text-sm/6 text-red-600`}>
                   {form.errors.email}
@@ -149,39 +120,21 @@ const SignUp = () => {
             </div>
 
             <div>
-              <label
-                htmlFor="password"
-                className={`block text-sm/6 font-medium text-gray-900`}
-              >
-                Contraseña
-              </label>
-              <div className={`mt-2`}>
-                <input
-                  type="password"
-                  name="password"
-                  id='password'
-                  className={`
-                    block
-                    w-full
-                    rounded-md
-                    bg-white
-                    px-3
-                    py-1.5
-                    text-base
-                    text-gray-900
-                    outline-1
-                    -outline-offset-1
-                    outline-gray-300
-                    placeholder:text-gray-400
-                    focus:outline-2
-                    focus:-outline-offset-2
-                    focus:outline-indigo-600
-                    sm:text-sm/6
-                  `}
-                  onChange={form.handleChange}
-                  value={form.values.password}
-                />
-              </div>
+              <Field
+                textLabel='Contraseña'
+                labelProps={{
+                  className: `block text-sm/6 font-medium text-gray-900`
+                }}
+                inputProps={{
+                  className: inputStyle,
+                  type: 'password',
+                  name: 'password',
+                  id: 'password',
+                  onChange: form.handleChange,
+                  value: form.values.password,
+                  autoComplete: 'off',
+                }}
+              />
               {form.errors.password && (
                 <span className={`mt-2 text-sm/6 text-red-600`}>
                   {form.errors.password}
@@ -190,49 +143,18 @@ const SignUp = () => {
             </div>
 
             <div>
-              <div className={`flex items-center justify-between`}>
-                <label
-                  htmlFor="password2"
-                  className={`block text-sm/6 font-medium text-gray-900`}
-                >
-                  Confirmar contraseña
-                </label>
-                <div className={`text-sm`}>
-                  <a
-                    href="/password-recovery"
-                    className={`
-                      font-semibold
-                      text-indigo-600
-                      hover:text-indigo-500
-                    `}
-                  >
-                    Recuperar contraseña
-                  </a>
-                </div>
-              </div>
+              <label
+                htmlFor='password2'
+                className={`block text-sm/6 font-medium text-gray-900`}
+              >
+                Confirmar contraseña
+              </label>
               <div className={`mt-2`}>
                 <input
-                  type="password2"
-                  name="password2"
+                  type='password2'
+                  name='password2'
                   id='password2'
-                  className={`
-                    block
-                    w-full
-                    rounded-md
-                    bg-white
-                    px-3
-                    py-1.5
-                    text-base
-                    text-gray-900
-                    outline-1
-                    -outline-offset-1
-                    outline-gray-300
-                    placeholder:text-gray-400
-                    focus:outline-2
-                    focus:-outline-offset-2
-                    focus:outline-indigo-600
-                    sm:text-sm/6
-                  `}
+                  className={inputStyle}
                   onChange={form.handleChange}
                   value={form.values.password2}
                 />
@@ -245,35 +167,22 @@ const SignUp = () => {
             </div>
 
             <div>
-              <button
-                type="submit"
-                className={`
-                  flex
-                  w-full
-                  justify-center
-                  rounded-md
-                  bg-indigo-600
-                  px-3
-                  py-1.5
-                  text-sm/6
-                  font-semibold
-                  text-white
-                  shadow-xs
-                  hover:bg-indigo-500
-                  focus-visible:outline-2
-                  focus-visible:outline-offset-2
-                  focus-visible:outline-indigo-600
-                `}
-              >
-                Enviar
-              </button>
+              <Button
+                buttonText='Enviar'
+                buttonProps={{
+                  type: 'submit',
+                  className: buttonStyle,
+                  disabled: !form.isValid || !form.dirty
+                }}
+                classOnDisabled={`opacity-50`}
+              />
             </div>
           </form>
 
           <p className={`mt-10 text-center text-sm/6 text-gray-500`}>
             Ya tienes una cuenta?&nbsp;
             <a
-              href="/sign-in"
+              href='/sign-in'
               className={`font-semibold text-indigo-600 hover:text-indigo-500`}
             >
               Iniciar sesión

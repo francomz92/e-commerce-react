@@ -57,6 +57,6 @@ request.interceptors.response.use(
       }
       return request(config);
     }
-    return Promise.reject(error.response?.data);
+    return Promise.reject(error.response?.data ?? {});
   }
 );

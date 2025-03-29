@@ -1,4 +1,5 @@
 import { request } from '../../apis/config';
+import { SimpleDetailResponse } from '../../schemas/common/responses';
 import { RequestArgs } from '../../types/apis';
 
 const requestActions: Record<string, CallableFunction> = {
@@ -43,6 +44,6 @@ export const getResponseData = async <T>(config: RequestArgs) => {
     const data: T = response.data
     return { data };
   } catch (error) {
-    return { error };
+    return { error: error as SimpleDetailResponse };
   }
 }

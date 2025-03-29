@@ -1,4 +1,5 @@
 import { API_BASE_URL } from '../../constants';
+import { SimpleDetailResponse } from '../../schemas/common/responses';
 import {
   LoginResponse,
   MyProfileResponse,
@@ -21,7 +22,7 @@ export const register = async (
     method: HttpMethods.POST,
     data: { username, email, password, password2 }
   }
-  return await getResponseData(config)
+  return await getResponseData<SimpleDetailResponse>(config)
 }
 
 export const confirmEmail = async (token: string) => {

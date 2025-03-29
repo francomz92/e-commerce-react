@@ -23,5 +23,6 @@ export interface UsersQueryParams extends BaseQueryParams {
 
 export interface UserResponse extends TinyUser {
   is_active?: boolean;
+  is_admin?: boolean;
   roles: Role[];
 }

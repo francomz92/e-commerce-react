@@ -13,11 +13,10 @@ export const useForm = <T extends FormikValues>(config: UseFormProps<T>) => {
   const formik = useFormik<T>({
     initialValues: config.initialValues ?? Object({}),
     onSubmit: async (values) => {
-      const isSuccess = await config.onSubmit?.(values);
-      if (isSuccess) formik.resetForm();
+      await config.onSubmit?.(values);
     },
-    onReset: async (values) => {
-      return await config.onReset?.(values)
+    onReset: async () => {
+      return await config.onReset?.()
     },
     validationSchema: config.validationSchema
   });
